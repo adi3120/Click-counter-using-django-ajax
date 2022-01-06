@@ -18,6 +18,7 @@
     </div>
 
     <button type="button" id="countButton" class="btn btn-primary">Click</button>
+    <button type="button" id="resetButton" class="btn btn-primary">Reset</button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
@@ -26,16 +27,33 @@
 </body>
 
 <script>
+    let counth2 = document.getElementById('counth2');
+
     let countButton = document.getElementById('countButton');
     countButton.addEventListener('click', countClickHandler);
     let count = 0;
 
+    let resetButton = document.getElementById('resetButton');
+
+    resetButton.addEventListener('click', () => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', "{%url 'ajaxcounter:index' %}", true);
+        xhr.onload = function() {
+            count = 0;
+            counth2.innerHTML = `<h2>Clicks = ${count}</h2>`;
+        }
+
+        xhr.send();
+
+    })
+
     function countClickHandler() {
         const xhr = new XMLHttpRequest();
+
         xhr.open('GET', "{%url 'ajaxcounter:index' %}", true);
         xhr.onload = function() {
             count++;
-            let counth2 = document.getElementById('counth2');
             counth2.innerHTML = `<h2>Clicks = ${count}</h2>`;
         }
 
